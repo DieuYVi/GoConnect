@@ -1,8 +1,8 @@
 import React, { useEffect, useState, } from 'react';
-import { View, StyleSheet, Button, Text, TouchableOpacity, Image, TextInput, Alert } from 'react-native';
+import { View, StyleSheet, Button, Text, TouchableOpacity, Image, TextInput, Alert, ScrollView } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import { launchImageLibrary } from 'react-native-image-picker'; // Import thư viện react-native-image-picker
+import { launchImageLibrary } from 'react-native-image-picker'; 
 import { Profile } from '../../models/Profile';
 
 
@@ -11,7 +11,7 @@ import { Profile } from '../../models/Profile';
 const EditOrCreateProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [image, setImage] = useState<string >(); // Thêm trường hình ảnh và đặt giá trị ban đầu là null
+  const [image, setImage] = useState<string >(); 
   const [isCreate, setIsCreate] = useState(true);
   const [userId, setUserId] = useState('');
   const [hometown,setHomeTown] = useState('');
@@ -43,7 +43,7 @@ const EditOrCreateProfileScreen: React.FC<{ navigation: any }> = ({ navigation }
         const data = snapshot.data() as Profile;
         setName(data.name);
         setDescription(data.description);
-        setImage(data.image); // Set hình ảnh từ dữ liệu profile
+        setImage(data.image); 
         setEthinicity(data.ethinicity);
         setHomeTown(data.hometown);
         setMajor(data.major);
@@ -60,7 +60,7 @@ const EditOrCreateProfileScreen: React.FC<{ navigation: any }> = ({ navigation }
       let profileData = {
         name: name,
         description: description,
-        image: image ,// Thêm trường hình ảnh vào dữ liệu profile
+        image: image ,
         ethinicity:ethinicity,
         hometown:hometown,
         school:school,
@@ -80,17 +80,15 @@ const EditOrCreateProfileScreen: React.FC<{ navigation: any }> = ({ navigation }
   // Hàm để chọn hình ảnh từ thư viện
   const chooseImage = () => {
     launchImageLibrary({ mediaType: 'photo' }, response => {
-      if (response && response.assets && response.assets.length > 0) { // Check if response and response.assets are defined
+      if (response && response.assets && response.assets.length > 0) { 
         const uri = response.assets[0].uri;
-        setImage(uri); // Set image to null if uri is undefined
+        setImage(uri); 
       }
     });
   };
   
-
-
   return (
-    
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
     <View style={[styles.container, { backgroundColor: '#fff' }]}>
       {/* Profile Image */}
       {image && <Image source={{ uri: image }} style={{ width: 100, height: 120 ,alignSelf:'center'}} />}
@@ -157,9 +155,8 @@ const EditOrCreateProfileScreen: React.FC<{ navigation: any }> = ({ navigation }
       <TouchableOpacity style={[styles.button, { backgroundColor: '#4b94f8' }]} onPress={handleSaveProfile}>
         <Text style={styles.buttonText}>Save Profile</Text>
       </TouchableOpacity>
-
-      
     </View>
+    </ScrollView>
   );
 };
 
