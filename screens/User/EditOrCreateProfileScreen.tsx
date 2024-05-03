@@ -9,6 +9,7 @@ import { Profile } from '../../models/Profile';
 
 
 const EditOrCreateProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+  const [editable, setEditable] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState<string >(); 
@@ -92,7 +93,7 @@ const EditOrCreateProfileScreen: React.FC<{ navigation: any }> = ({ navigation }
     <View style={[styles.container, { backgroundColor: '#fff' }]}>
       {/* Profile Image */}
       {image && <Image source={{ uri: image }} style={{ width: 100, height: 120 ,alignSelf:'center'}} />}
-      <TouchableOpacity style={[styles.button, { backgroundColor: '#4b94f8' }]} onPress={chooseImage}>
+      <TouchableOpacity style={[styles.button, { backgroundColor: '#4b94f8',width:'30%',alignSelf:'center', }]} onPress={chooseImage}>
         <Text style={styles.buttonText}>Choose Image</Text>
       </TouchableOpacity>
       {/* Profile Name */}
@@ -102,11 +103,10 @@ const EditOrCreateProfileScreen: React.FC<{ navigation: any }> = ({ navigation }
         value={name}
         onChangeText={text => setName(text)}
         placeholder="Enter name"
+        editable={editable}
       />
       <Text/>
       {/* Profile DayOfBirth
-      <Text style={{marginBottom:5}}>Date of birth:</Text>
-       */}
       {/* Profile homtown */}
       <Text style={{marginBottom:5}}>Quê quán:</Text>
       <TextInput
@@ -114,6 +114,7 @@ const EditOrCreateProfileScreen: React.FC<{ navigation: any }> = ({ navigation }
         value={hometown}
         onChangeText={text => setHomeTown(text)}
         placeholder="Quê quán"
+        editable={editable}
       />
       {/* Profile ethinicity */}
       <Text style={{marginBottom:5}}>Sắc tộc:</Text>
@@ -122,6 +123,7 @@ const EditOrCreateProfileScreen: React.FC<{ navigation: any }> = ({ navigation }
         value={ethinicity}
         onChangeText={text => setEthinicity(text)}
         placeholder="Sắc tộc"
+        editable={editable}
       />
       {/* Profile school */}
       <Text style={{marginBottom:5}}>Trường học:</Text>
@@ -130,6 +132,7 @@ const EditOrCreateProfileScreen: React.FC<{ navigation: any }> = ({ navigation }
         value={school}
         onChangeText={text => setScholl(text)}
         placeholder="Trường học"
+        editable={editable}
       />
       {/* Profile major */}
       <Text style={{marginBottom:5}}>Chuyên ngành:</Text>
@@ -138,6 +141,7 @@ const EditOrCreateProfileScreen: React.FC<{ navigation: any }> = ({ navigation }
         value={major}
         onChangeText={text => setMajor(text)}
         placeholder="Chuyên ngành"
+        editable={editable}
       />
       {/* Profile Description */}
       <Text style={{ marginBottom: 5 }}>Description:</Text>
@@ -151,10 +155,17 @@ const EditOrCreateProfileScreen: React.FC<{ navigation: any }> = ({ navigation }
         placeholder="Enter description"
         textAlignVertical='top'
         textAlign='left'
+        editable={editable}
       />
-      <TouchableOpacity style={[styles.button, { backgroundColor: '#4b94f8' }]} onPress={handleSaveProfile}>
-        <Text style={styles.buttonText}>Save Profile</Text>
-      </TouchableOpacity>
+      <Button
+        title={editable ? 'Save' : 'Edit'}
+        onPress={() =>{if (editable) {
+          handleSaveProfile();
+        }
+        setEditable(prevState => !prevState);
+            }      
+          }
+      />
     </View>
     </ScrollView>
   );
